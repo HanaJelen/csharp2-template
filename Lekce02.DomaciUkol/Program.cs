@@ -1,83 +1,83 @@
-﻿public class Lucisnik
+﻿public class Archer
 {
-    string Jmeno;
-    int PocetSipu;
+    string Name;
+    int NumberOfArrow;
 
-    public Lucisnik(string jmeno, int pocetSipu)
+    public Archer(string name, int numberOfArrow)
     {
-        Jmeno = jmeno;
-        PocetSipu = pocetSipu;
+        Name = name;
+        NumberOfArrow = numberOfArrow;
     }
 
-    public void Vystrel()
+    public void Shoot()
     {
-        if (PocetSipu > 0)
+        if (NumberOfArrow > 0)
         {
-            PocetSipu --; 
-            Console.WriteLine("Šíp vystřelen!\n"); 
+            NumberOfArrow --; 
+            Console.WriteLine("Arrow is shot from a bow!\n"); 
         }
         else
         {
-            Console.WriteLine("Nemáte dostatek šípů. Doplňte šípy.\n");
+            Console.WriteLine("You don´t have an arrow. You can´t shoot!\n");
         } 
     }
 
-    public void PridejSipy(int pocetSipu)
+    public void GetArrow(int numberOfArrow)
     {
-        PocetSipu += pocetSipu;
-        Console.WriteLine("Šípy doplněny. Počet šípů je nyní {0}.\n", PocetSipu);
+        NumberOfArrow += numberOfArrow;
+        Console.WriteLine("Number of arrows is {0} now.\n", NumberOfArrow);
     }
 
-     public void ZobravStav()
+     public void DisplayStatus()
     {
-        Console.WriteLine("Jméno lučišníka je {0} a počet šípů v toulci je {1}.\n", Jmeno, PocetSipu);
+        Console.WriteLine("The archer´s name is {0} and he has {1} arrow(s).\n", Name, NumberOfArrow);
     }
 }
 internal class Program
 {
     private static void Main(string[] args)
     {
-        Lucisnik legolas = new Lucisnik("Legolas", 3);
-        string pomlcka = "---------------------------------------------------------";
-        Console.WriteLine("Vítejte ve hře Lučičník.\n{0}", pomlcka);
+        Archer legolas = new Archer("Legolas", 3);
+        string dash = "---------------------------------------------------------";
+        Console.WriteLine("Welcome to the game Archer.\n{0}", dash);
         while (true)
         {  
-        legolas.ZobravStav();
-        Console.WriteLine("Vyberte číslo akce, kterou chcete provést:\n{0}", pomlcka);
-        Console.WriteLine("1. Vystřelit šíp\n2. Přidat šípy\n3. Konec\n{0}", pomlcka);
+        legolas.DisplayStatus();
+        Console.WriteLine("Choose action (Numbers: 1-2-3):\n{0}", dash);
+        Console.WriteLine("1. Shoot arrow\n2. Get arrow\n3. End\n{0}", dash);
         
-        switch (NactiCeleCisloZKonzole())
+        switch (GetIntergerFromConsole())
         {
             case 1:
-                legolas.Vystrel();
+                legolas.Shoot();
                 break;
             case 2:
-                Console.WriteLine("Zadejte počet šípů, které chcete přidat.\n");
-                int vstup = NactiCeleCisloZKonzole();
-                while (vstup < 0)
+                Console.WriteLine("Input how many arrows, you want to add.\n");
+                int input = GetIntergerFromConsole();
+                while (input < 0)
                 {
-                    Console.WriteLine("Zadejte celé kladné číslo.\n");
-                    vstup = NactiCeleCisloZKonzole();
+                    Console.WriteLine("Input integer.\n");
+                    input = GetIntergerFromConsole();
                 }
-                legolas.PridejSipy(vstup);
+                legolas.GetArrow(input);
                 break;
             case 3:
                 return;
             default:
-                Console.WriteLine("Nezadali jste platné číslo. Zvolte 1, 2, nebo 3.\n");
+                Console.WriteLine("Input 1, 2, or 3.\n");
                 break;
         }
         }
     }
-    public static int NactiCeleCisloZKonzole()
+    public static int GetIntergerFromConsole()
     {
-        string vyzva = Console.ReadLine();
-        int celeKladneCislo;
-        while (!int.TryParse(vyzva, out celeKladneCislo))
+        string input = Console.ReadLine();
+        int integer;
+        while (!int.TryParse(input, out integer))
             {
-                Console.WriteLine("Číslo nebylo zadáno správně. Je třeba zadat celé kládné číslo.\n");
-                vyzva = Console.ReadLine();
+                Console.WriteLine("Input integer.\n");
+                input = Console.ReadLine();
             }
-        return celeKladneCislo;
+        return integer;
     }
 }
