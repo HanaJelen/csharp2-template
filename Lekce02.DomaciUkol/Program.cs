@@ -38,7 +38,7 @@ internal class Program
     private static void Main(string[] args)
     {
         Archer legolas = new Archer("Legolas", 3);
-        string dash = "---------------------------------------------------------";
+        string dash = new string('-', 50);
         Console.WriteLine("Welcome to the game Archer.\n{0}", dash);
         while (true)
         {  
