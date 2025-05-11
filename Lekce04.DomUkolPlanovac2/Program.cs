@@ -49,16 +49,14 @@ internal class Program
                     foreach (var item in listOfEvents.OrderBy(item => item.Date))
                     {
                         int difference = (item.Date - actualTime).Days;
-                        string dateFormat = item.Date.ToString();
-                        dateFormat = $"{dateFormat.Substring(6,4)}-{dateFormat.Substring(3,2)}-{dateFormat.Substring(0,2)}";
+                        string dateFormat = DateToString(item.Date);
                         Console.WriteLine((difference > 0) ? $"Event {item.Name} with date {dateFormat} will happen {difference} days ago." : $"Event {item.Name} with date {dateFormat} will happened {difference * -1} days ago.");
                     }
                     break;
                 case "STATS":
                     foreach (var item in statistics)
 		            {
-                        string dateFormat = item.Key.ToString();
-                        dateFormat = $"{dateFormat.Substring(6,4)}-{dateFormat.Substring(3,2)}-{dateFormat.Substring(0,2)}";
+                        string dateFormat = DateToString(item.Key);
 			            Console.WriteLine($"Date: {dateFormat}: events: {item.Value}");
 		            }
                     break;
@@ -71,6 +69,14 @@ internal class Program
             
         }
     }
+
+    public static string DateToString(DateTime date)
+    {
+        string dateFormat = date.ToString();
+        dateFormat = $"{dateFormat.Substring(6,4)}-{dateFormat.Substring(3,2)}-{dateFormat.Substring(0,2)}";
+        return dateFormat;
+    }
+
     public static DateTime StringToDate(string date)
     {
         DateTime dateValue;
