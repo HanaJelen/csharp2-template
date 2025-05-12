@@ -72,8 +72,7 @@ internal class Program
 
     public static string DateToString(DateTime date)
     {
-        string dateFormat = date.ToString();
-        dateFormat = $"{dateFormat.Substring(6,4)}-{dateFormat.Substring(3,2)}-{dateFormat.Substring(0,2)}";
+        string dateFormat = date.ToString("yyyy-MM-dd");
         return dateFormat;
     }
 
