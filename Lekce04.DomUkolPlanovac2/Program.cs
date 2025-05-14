@@ -8,14 +8,61 @@ public class Event
 {
     public string Name{ get; set; }
     public DateTime Date { get; set; }
+    public static List<Event> ListOfEvents;
+    public static Dictionary<DateTime, int> Statistics;
+    
+    public void CreateEvent(string name, DateTime date)
+    {
+        Name = name;
+        Date = date;
+    }
+    public static void AddToList(string name, DateTime date)
+    {
+        ListOfEvents.Add(new Event(){ Name = name, Date = date});
+    }
+    public static void GetListOfEvents()
+    {
+    DateTime actualTime = DateTime.Now;
+    foreach (var item in ListOfEvents.OrderBy(item => item.Date))
+        {
+            int difference = (item.Date - actualTime).Days;
+            string dateFormat = DateToString(item.Date);
+            Console.WriteLine((difference > 0) ? $"Event {item.Name} with date {dateFormat} will happen {difference} days ago." : $"Event {item.Name} with date {dateFormat} will happened {difference * -1} days ago.");
+        }
+    }
+    public static void AddToStats(DateTime date)
+    {
+        if (!Statistics.ContainsKey(date))
+            {
+                Statistics.Add(date, 1);
+            }
+        else
+            {   Statistics[date] += 1;
+            }      
+    }
+    public static void GetStats()
+    {
+    foreach (var item in Statistics)
+		{
+            string dateFormat = DateToString(item.Key);
+			Console.WriteLine($"Date: {dateFormat}: events: {item.Value}");
+		}
+    }
+    public static string DateToString(DateTime date)
+    {
+        string dateFormat = date.ToString("yyyy-MM-dd");
+        return dateFormat;
+    }
+
 }
 
 internal class Program
 {
     private static void Main(string[] args)
     {
-        List<Event> listOfEvents = new List<Event>();
-        Dictionary<DateTime, int> statistics = new Dictionary<DateTime, int>();
+        Event udalost = new Event();
+        Event.ListOfEvents = new List<Event>();
+        Event.Statistics = new Dictionary<DateTime, int>();
 
         while (true)
         {
@@ -27,38 +74,16 @@ internal class Program
                 switch (prvkyVstupu[0].ToUpper())
                 {
                 case "EVENT":
-                    string name = prvkyVstupu[1];
-                    DateTime dateValue = StringToDate(prvkyVstupu[2]);
-
-                    Event udalost = new Event(){Name = name, Date = dateValue};
-                    listOfEvents.Add(udalost);//fill list of objects
-
-                    //fill dictionary with statistics 
-                    if (statistics.ContainsKey(dateValue))
-                    {
-                        statistics[dateValue] += 1;
-                    }
-                    else
-                    {
-                        statistics.Add(dateValue, 1);
-                    }                  
+                    Event.AddToList(prvkyVstupu[1], StringToDate(prvkyVstupu[2]));
+                    DateTime date = StringToDate(prvkyVstupu[2]);
+                    Event.AddToStats(date);              
                     break;
 
                 case "LIST":
-                    DateTime actualTime = DateTime.Now;
-                    foreach (var item in listOfEvents.OrderBy(item => item.Date))
-                    {
-                        int difference = (item.Date - actualTime).Days;
-                        string dateFormat = DateToString(item.Date);
-                        Console.WriteLine((difference > 0) ? $"Event {item.Name} with date {dateFormat} will happen {difference} days ago." : $"Event {item.Name} with date {dateFormat} will happened {difference * -1} days ago.");
-                    }
+                    Event.GetListOfEvents();
                     break;
                 case "STATS":
-                    foreach (var item in statistics)
-		            {
-                        string dateFormat = DateToString(item.Key);
-			            Console.WriteLine($"Date: {dateFormat}: events: {item.Value}");
-		            }
+                    Event.GetStats();
                     break;
             case "END":
                 return;
@@ -68,12 +93,6 @@ internal class Program
                 }
             
         }
-    }
-
-    public static string DateToString(DateTime date)
-    {
-        string dateFormat = date.ToString("yyyy-MM-dd");
-        return dateFormat;
     }
 
     public static DateTime StringToDate(string date)
