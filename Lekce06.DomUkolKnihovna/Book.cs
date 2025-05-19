@@ -6,13 +6,13 @@ namespace Lekce06.DomUkolKnihovna;
 public class Book
 {
     public string Title { get; set; }
-    public string author;
-    public string Author
+    public string? author;
+    public string? Author
     {
         get { return author; }
         set
         {
-            if (value == "")
+            if (string.IsNullOrWhiteSpace(value))
             {
                 author = "Neznámý";
             }

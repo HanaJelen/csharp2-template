@@ -97,7 +97,7 @@ internal class Program
 
     public static string LoadInput()//načtení a ověření vstupu, že se nejedná o prázdný řetězec či řetezec s hodnotou null
     {
-        string input = Console.ReadLine();
+        string? input = Console.ReadLine();
         while (string.IsNullOrWhiteSpace(input) == true)
         {
             Console.WriteLine("Please enter some input.");
