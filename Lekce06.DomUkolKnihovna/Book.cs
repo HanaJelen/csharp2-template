@@ -6,7 +6,22 @@ namespace Lekce06.DomUkolKnihovna;
 public class Book
 {
     public string Title { get; set; }
-    public string Author { get; set; }
+    public string author;
+    public string Author
+    {
+        get { return author; }
+        set
+        {
+            if (value == "")
+            {
+                author = "Neznámý";
+            }
+            else
+            {
+                author = value;
+            }
+        }
+    }
     public DateTime PublishedDate { get; set; }
     private int pages;
     public int Pages
