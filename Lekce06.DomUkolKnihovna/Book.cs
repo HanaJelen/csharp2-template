@@ -40,7 +40,6 @@ public class Book
         }
     }
     public static List<Book> ListOfBooks = [];
-    public static Dictionary<DateTime, int> Statistics = [];
 
     //constructor
     public Book(string title, string author, DateTime publishedDate, int pages)

@@ -10,7 +10,6 @@ internal class Program
     private static void Main(string[] args)
     {
         Book.ListOfBooks = new List<Book>();
-        Book.Statistics = new Dictionary<DateTime, int>();
 
         while (true)
         {
