@@ -6,7 +6,7 @@ namespace Lekce06.DomUkolKnihovna;
 public class Book
 {
     public string Title { get; set; }
-    public string? author;
+    private string? author;
     public string? Author
     {
         get { return author; }
