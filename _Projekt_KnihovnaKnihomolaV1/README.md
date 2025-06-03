@@ -1,6 +1,7 @@
 # Závěrečný projekt - Knihovna pro knihomola
 
 Co by měla umět:
+
 -- funkci ADD:
 
 - vytvoří novou knihovnu (list, který bude obsahovat jednotlivé objekty knihy)
