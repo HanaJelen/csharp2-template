@@ -3,17 +3,21 @@ using System.Text;
 
 namespace _Projekt_KnihovnaKnihomolaV1;
 
-//třída obsahující objekt kniha v různých podobách
+//třída obsahující objekt publikace v různých podobách
 public abstract class Publication
 {
+    public string Medium { get; set; }
     public string Title { get; set; }
     public string Author { get; set; }
+    public string NameOfSerie { get; set; }
     public int NumberOfBookInSerie { get; set; }
 
-    public Publication(string title, string author, int numberOfBookInSerie)//constructor
+    public Publication(string medium, string title, string author, string nameOfSerie, int numberOfBookInSerie)//constructor
     {
+        Medium = medium;
         Title = title;
         Author = author;
+        NameOfSerie = nameOfSerie;
         NumberOfBookInSerie = numberOfBookInSerie;
     }
 
@@ -22,76 +26,103 @@ public abstract class Publication
 
 public abstract class Purchased : Publication
 {
+    public string Genre { get; set; }
+    public string Theme { get; set; }
     public bool ReadStatus { get; set; }
     public int Rating { get; set; }
-    public Purchased(string title, string author, int numberOfBookInSerie, bool readStatus, int rating) : base(title, author, numberOfBookInSerie)
+
+    public Purchased(string medium, string title, string author, string nameOfSerie, int numberOfBookInSerie, string genre, string theme, bool readStatus, int rating) : base(medium, title, author, nameOfSerie, numberOfBookInSerie)
     {
         ReadStatus = readStatus;
         Rating = rating;
+        Genre = genre;
+        Theme = theme;
     }
 }
 
-public class Fiction : Purchased
+public class Book : Purchased
 {
-    int Pages { get; set; }
-    public string Genre { get; set; }
-    public Fiction(string title, string author, int numberOfBookInSerie, int pages, string genre, bool readStatus, int rating) : base(title, author, numberOfBookInSerie, readStatus, rating)
+    public int Pages { get; set; }
+
+    public Book(string medium, string title, string author, string nameOfSerie, int numberOfBookInSerie, string genre, string theme, int pages, bool readStatus, int rating) : base(medium, title, author, nameOfSerie, numberOfBookInSerie, genre, theme, readStatus, rating)
     {
-        Genre = genre;
+
         Pages = pages;
     }
 
     public override void GetInfo()
     {
-        Console.WriteLine($"kniha: {Title}, autor: {Author}, počet stran: {Pages}, žánr: {Genre}, přečteno: {ReadStatus}, hodnocení: {Rating}");
+        if (NameOfSerie is null)
+        {
+            Console.WriteLine($"kniha: {Title}, autor: {Author}, počet stran: {Pages}, žánr: {Genre}, přečteno: {ReadStatus}, hodnocení: {Rating}");
+        }
+        else
+        {
+            Console.WriteLine($"kniha: {Title}, autor: {Author}, počet stran: {Pages}, žánr: {Genre}, serie: {NameOfSerie}, přečteno: {ReadStatus}, hodnocení: {Rating}");
+        }
     }
 }
 
 public class AudioBook : Purchased
 {
     public TimeSpan RunTime { get; set; }
-    public string Genre { get; set; }
-    public AudioBook(string title, string author, int numberOfBookInSerie, TimeSpan runTime, string genre, bool readStatus, int rating) : base(title, author, numberOfBookInSerie, readStatus, rating)
+
+    public AudioBook(string medium, string title, string author, string nameOfSerie, int numberOfBookInSerie, string genre, string theme, TimeSpan runTime, bool readStatus, int rating) : base(medium, title, author, nameOfSerie, numberOfBookInSerie, genre, theme, readStatus, rating)
     {
+        
         RunTime = runTime;
-        Genre = genre;
     }
 
     public override void GetInfo()
     {
-        Console.WriteLine($"kniha: {Title}, autor: {Author}, délka: {RunTime}, žánr: {Genre}, poslechnuto: {Genre}, hodnocení: {Rating}");
-    }
-}
-
-    //definition of non-fiction book
-    public class NonFiction : Purchased
-    {
-        public int Pages{ get; set; }
-        public string Theme { get; set; }
-        public NonFiction(string title, string author, int numberOfBookInSerie, int pages, string theme, bool readStatus, int rating) : base(title, author, numberOfBookInSerie, readStatus, rating)
+        if (NameOfSerie is null)
         {
-        Pages = pages;
-        Theme = theme;
+            Console.WriteLine($"kniha: {Title}, autor: {Author}, délka: {RunTime}, žánr: {Genre}, přečteno: {ReadStatus}, hodnocení: {Rating}");
         }
-
-    public override void GetInfo()
-    {
-        Console.WriteLine($"Kniha: {Title}, autor: {Author}, stran: {Pages}, téma: {Theme}, přečteno: {ReadStatus}, hodnocení: {Rating}");
+        else
+        {
+            Console.WriteLine($"kniha: {Title}, autor: {Author}, délka: {RunTime}, žánr: {Genre}, serie: {NameOfSerie}, přečteno: {ReadStatus}, hodnocení: {Rating}");
+        }
     }
 }
 
-    public class WishListBook : Publication
+
+public class WishListBook : Publication
+{
+    public WishListBook(string medium, string title, string author, string nameOfSerie, int numberOfBookInSerie) : base(medium, title, author, nameOfSerie, numberOfBookInSerie)
+    {}
+
+    public override void GetInfo()
+    {
+        if (NameOfSerie is null)
+        {
+            Console.WriteLine($"kniha: {Title}, autor: {Author}, typ media: {Medium}");
+        }
+        else
+        {
+            Console.WriteLine($"kniha: {Title}, autor: {Author}, serie: {NameOfSerie}, typ media: {Medium}");
+        }
+    }
+}
+public class InPressBook : Publication
     {
         public DateTime DateRealease { get; set; }
 
-        public WishListBook(string title, string author, int number, DateTime dateRealease) : base(title, author, number)
+        public InPressBook(string medium, string title, string author, string nameOfSerie, int numberOfBookInSerie, DateTime dateRealease) : base(medium, title, author, nameOfSerie, numberOfBookInSerie)
         {
             DateRealease = dateRealease;
         }
 
-    public override void GetInfo()
-    {
-        Console.WriteLine($"Kniha: {Title}, autor: {Author}, datum vydání: {DateRealease}");
+        public override void GetInfo()
+        {
+            if (NameOfSerie is null)
+            {
+                Console.WriteLine($"kniha: {Title}, autor: {Author}, typ media: {Medium}, datum vydání: {DateRealease}");
+            }
+            else
+            {
+                Console.WriteLine($"kniha: {Title}, autor: {Author}, serie: {NameOfSerie}, typ media: {Medium}, datum vydání: {DateRealease}");
+            }
+        }
     }
-}
 

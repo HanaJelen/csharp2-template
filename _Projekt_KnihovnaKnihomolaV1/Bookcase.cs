@@ -3,146 +3,124 @@ using System.Runtime.CompilerServices;
 
 namespace _Projekt_KnihovnaKnihomolaV1;
 
-public class Bookcase
+class BookList
 {
-    public string Name;
-    public List<Publication> ListOfBookcase;
+    public static List<Book> ListOfBook = [];
 
-    public Bookcase(string name)
+    public static void AddToList(Book publication)
     {
-        Name = name;
-        ListOfBookcase = [];
+        ListOfBook.Add(publication);
     }
-
-    //method ADD - add book to bookcase
-    public void AddToList(Publication publication)
+    public static void GetListOfBooks()
     {
-        ListOfBookcase.Add(publication);
-    }
-    //metoda LIST - all books in bookcase in alphabet order
-    public void GetListOfBooks()
-    {
-        foreach (var item in ListOfBookcase.OrderBy(item => item.Title))
-        //item in listofbokcase.OfType<NonFiction>()
-        {
-            if (item is NonFiction)
-            {
-                //NonFiction kniha = (NonFiction)item;
-                item.GetInfo();
-            }
-            else if (item is Fiction)
-            {
-                //Fiction kniha = (Fiction)item;
-                item.GetInfo();
-            }
-            else if (item is AudioBook)
-            {
-                //AudioBook kniha = (AudioBook)item;
-                item.GetInfo();
-            }
-        }
-    }
-    //metoda FIND
-    public void GetTitle(string world)//book
-    {
-        Console.WriteLine($"""Výsledky hledání pro "{world}":""");
-        foreach (var item in ListOfBookcase)
-        {
-            if (item.Title.ToLower().Contains(world.ToLower()))
-            {
-                Console.WriteLine($" - {item.Title}");
-            }
-        }
-    }
-    public void GetAuthor(string name)//author
-    {
-        Console.WriteLine($"""Hledáte autora s přijmením "{name}":""");
-        foreach (var item in ListOfBookcase)
-            if (item.Author.ToLower().Contains(name.ToLower()))
-            {
-                Console.WriteLine($" - {item.Author}");
-            }
-    }
-}
-public class Wish
-{
-    public List<WishListBook> ListOfWish;
-
-    public Wish()
-    {
-        ListOfWish = [];
-    }
-
-    //method ADD - add book to wishlist
-    public void AddToList(WishListBook publication)
-    {
-        ListOfWish.Add(publication);
-    }
-    //metoda LIST - all books in bookcase in alphabet order
-    public void GetListOfWish()
-    {
-        foreach (var item in ListOfWish.OrderBy(item => item.DateRealease))
+        foreach (var item in ListOfBook.OrderBy(item => item.Title))
+        //item in listofbokcase.OfType<Book>()
         {
             item.GetInfo();
         }
     }
-}
-
-
-public class Series
-{
-    public Dictionary<string, Serie> DictSeries = [];
-    public void AddToSerie(string nameOfSerie, Publication book)
+    public static List<Publication> GetSerie(string nameSerie)
     {
-        if (!DictSeries.ContainsKey(nameOfSerie))
+        List < Publication > serie = [];
+        foreach (var item in ListOfBook)
         {
-            var serie = new Serie();
-            serie.AddToSerie(book);
-            DictSeries.Add(nameOfSerie, serie);
-        }
-        else
-        {
-            DictSeries[nameOfSerie].AddToSerie(book);
-        }
-    }
-    //method FIND - find the serie
-    public void GetSerie(string nameOfSerie)
-    {
-        if (DictSeries.ContainsKey(nameOfSerie))
-        {
-            Console.WriteLine($"""Serie s názvem "{nameOfSerie}" obsahuje tyto knihy:""");
-            DictSeries[nameOfSerie].GetListOfBooksInSerie();
-        }
-        else
-        {
-            Console.WriteLine("Serie is not found.");
-        }
-    }
-
-
-    public class Serie
-    {
-        public List<Publication> ListOfBooksInSerie;
-
-        public Serie()
-        {
-            ListOfBooksInSerie = [];
-        }
-
-        //method ADD - add book to serie
-        public void AddToSerie(Publication publication)
-        {
-            ListOfBooksInSerie.Add(publication);
-        }
-        //metod LIST of books in serie for FIND function
-        public void GetListOfBooksInSerie()
-        {
-            foreach (var item in ListOfBooksInSerie.OrderBy(item => item.NumberOfBookInSerie))
+            if (item.NameOfSerie.ToLower().Contains(nameSerie.ToLower()))
             {
-                item.GetInfo();
+                serie.Add(item);
             }
         }
-
+        //var vyber = from v in ListOfBook where v.NameOfSerie.Contains(nameSerie) select ( v.Title, v.Author, v.NumberOfBookInSerie);
+        return serie;
     }
 }
 
+class AudioList
+{
+    public static List<AudioBook> ListOfAudio = [];
+
+    public static void AddToList(AudioBook publication)
+    {
+        ListOfAudio.Add(publication);
+    }
+    public static void GetListOfBooks()
+    {
+        foreach (var item in ListOfAudio.OrderBy(item => item.Title))
+        //item in listofbokcase.OfType<Book>()
+        {
+            item.GetInfo();
+        }
+    }
+    public static List<Publication> GetSerie(string nameSerie)
+    {
+        List < Publication > serie = [];
+        foreach (var item in ListOfAudio)
+        {
+            if (item.NameOfSerie.ToLower().Contains(nameSerie.ToLower()))
+            {
+                serie.Add(item);
+            }
+        }
+        //var vyber = from v in ListOfAudio where v.NameOfSerie.Contains(nameSerie) select ( v.Title, v.Author, v.NumberOfBookInSerie);
+        return serie;
+    }
+}
+
+class WishList
+{
+    public static List<WishListBook> ListOfWish = [];
+
+    public static void AddToList(WishListBook publication)
+    {
+        ListOfWish.Add(publication);
+    }
+    public static void GetListOfBooks()
+    {
+        foreach (var item in ListOfWish.OrderBy(item => item.Title))
+        {
+            item.GetInfo();
+        }
+    }
+    public static List<Publication> GetSerie(string nameSerie)
+    {
+        List < Publication > serie = [];
+        foreach (var item in ListOfWish)
+        {
+            if (item.NameOfSerie.ToLower().Contains(nameSerie.ToLower()))
+            {
+                serie.Add(item);
+            }
+        }
+        //var vyber = from v in ListOfWish where v.NameOfSerie.Contains(nameSerie) select ( v.Title, v.Author, v.NumberOfBookInSerie);
+        return serie;
+    }
+}
+
+class PublishingSheduleList
+{
+    public static List<InPressBook> ListOfPublishingShedule = [];
+
+    public static void AddToList(InPressBook publication)
+    {
+        ListOfPublishingShedule.Add(publication);
+    }
+    public static void GetListOfBooks()
+    {
+        foreach (var item in ListOfPublishingShedule.OrderBy(item => item.DateRealease))
+        {
+            item.GetInfo();
+        }
+    }
+    public static List<Publication> GetSerie(string nameSerie)
+    {
+        List < Publication > serie = [];
+        foreach (var item in ListOfPublishingShedule)
+        {
+            if (item.NameOfSerie.ToLower().Contains(nameSerie.ToLower()))
+            {
+                serie.Add(item);
+            }
+        }
+        //var vyber = from v in ListOfPublishingShedule where v.NameOfSerie.Contains(nameSerie) select ( v.Title, v.Author, v.NumberOfBookInSerie);
+        return serie;
+    }
+}
