@@ -2,7 +2,20 @@
 
 Co by měla umět:
 
--- funkci ADD:
+-- funkce z třídy FileManage:
+
+- načte soubor a zontroluje existenci požadovaných souborů
+- převede soubor do listu
+- převede list zpátky do souboru
+
+-- funkce z třídy InputManage:
+
+- načte vstup a zkontroluje, zda není vložen prázdný řetězec
+- rozdělí vstup (string) na příslušné části a převede do listu stringů a zkontroluje jejich počet, zda odpovídá očekávané délce
+- převede načtený vstup do objektu třídy Publication a jednotlivé části kontroluje dle požadovaného typu vstupu (parsování)
+
+Funkce pracující s listy třídy Bookcase a objekty třídy Publication:
+-- funkce ADD:
 
 - vytvoří novou knihovnu (list, který bude obsahovat jednotlivé objekty knihy)
 - přidá knihu (typu fiction, non-fiction, audio, wishbook) do konkrétní knihovny (do listu => 1 list = 1 fyzická knihovna, místo uložení knihy)
@@ -33,6 +46,7 @@ Co by měla umět:
 - odstranění konkrétní knihy
 - přesun knih mezi knihovnami (listy), respektive změna umístění
 - přesun knihy z wishlistu do knihovny a smazání z wishlistu
+- úprava konkrétní knihy, změna hodnocení z nehodnocena na hodnocení
   
 -- funkce END:
 
