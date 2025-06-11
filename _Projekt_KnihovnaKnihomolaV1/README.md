@@ -15,6 +15,7 @@ Co by měla umět:
 - převede načtený vstup do objektu třídy Publication a jednotlivé části kontroluje dle požadovaného typu vstupu (parsování)
 
 Funkce pracující s listy třídy Bookcase a objekty třídy Publication:
+
 -- funkce ADD:
 
 - vytvoří novou knihovnu (list, který bude obsahovat jednotlivé objekty knihy)
