@@ -11,38 +11,86 @@ class FileManage
 
         public static void OpenFile()
         {
-            List<string> soubory = new List<string>() { BooksCSV, AudiosCSV, WishlistCSV};
-            foreach (var item in soubory)
+        List<string> soubory = new List<string>() { BooksCSV, AudiosCSV, WishlistCSV};
+        foreach (var soubor in soubory)
             {
-                if (File.Exists(item))
-                {
-                    FileToList(item);
-                }
-                else
-                {
-                    Console.WriteLine($"Soubor {item} nenalezen.");
-                }
+            if (File.Exists(soubor))
+            {
+                FileToList(soubor);
+            }
+            else
+            {
+                Console.WriteLine($"Soubor {soubor} nenalezen.");
             }
         }
+        }
 
-        public static void FileToList(string fileBookcase)//převod csv na listy
+        public static void FileToList(string soubor)//převod csv na listy
+    {
+        var nacteneZeSouboru = File.ReadAllLines(soubor);
+        foreach (var item in nacteneZeSouboru)
         {
-            var nacteneZeSouboru = File.ReadAllLines(fileBookcase);
-            foreach (var item in nacteneZeSouboru)
+            string[] inputParts = InputManage.LoadInputToParts(item);
+            switch (inputParts[0])
             {
-                InputManage.GetNewPublication(item);
+                case "book":
+                    Book kniha = new Book(inputParts[0].Trim(), inputParts[1].Trim(), inputParts[2].Trim(), inputParts[3].Trim(), InputManage.StringToNumberOrNull(inputParts[4].Trim(),"numberOfBookInSerie"), inputParts[5].Trim(), inputParts[6].Trim(), InputManage.StringToNumber(inputParts[7].Trim()), InputManage.StringToBoolean(inputParts[8].Trim()), InputManage.StringToNumberOrNull(inputParts[9].Trim(),"dateRelease"));
+                    BookList.ListOfBook.Add(kniha);
+                    break;
+                case "audio":
+                    AudioBook audio = new AudioBook(inputParts[0].Trim(), inputParts[1].Trim(), inputParts[2].Trim(), inputParts[3].Trim(), InputManage.StringToNumberOrNull(inputParts[4].Trim(),"numberOfBookInSerie"), inputParts[5].Trim(), inputParts[6].Trim(), InputManage.StringToTime(inputParts[7].Trim()), InputManage.StringToBoolean(inputParts[8].Trim()), InputManage.StringToNumberOrNull(inputParts[9].Trim(),"dateRelease"));
+                    AudioList.ListOfAudio.Add(audio);
+                    break;
+                case "wish":
+                    Publication wish = new WishListBook(inputParts[0].Trim(), inputParts[1].Trim(), inputParts[2].Trim(), inputParts[3].Trim(), InputManage.StringToNumber(inputParts[4].Trim()), InputManage.StringToDate(inputParts[5]));
+                    WishList.ListOfWish.Add((WishListBook)wish);
+                    break;
+                default:
+                    Console.WriteLine($"Položka ({item}) nebyla správně načtena.");
+                    break;
             }
         }
-        public static void ListToFile()
+    }
+        
+       public static void ListToFile()
         {
-            Directory.CreateDirectory(Adresar);
-            var knihy = BookList.ListOfBook.Select(Book => $"{Book.Medium}; {Book.Title}; {Book.Author}; {Book.NameOfSerie}; {Book.NumberOfBookInSerie}; {Book.Genre}; {Book.Theme}; {Book.Pages}; {Book.ReadStatus}; {Book.Rating}");
-            File.AppendAllLines(Path.Combine(Adresar, "listOfBooks.csv"), knihy);
+            var vsechnyKnihy = BookList.ListOfBook.Select(Book => $"{Book.Medium}; {Book.Title}; {Book.Author}; {Book.NameOfSerie}; {Book.NumberOfBookInSerie}; {Book.Genre}; {Book.Theme}; {Book.Pages}; {Book.ReadStatus}; {Book.Rating}");
+            var nacteneZeSouboru = File.ReadAllLines(BooksCSV);
+            List<string> noveKnihy = [];
 
-            var audio = AudioList.ListOfAudio.Select(Book => $"{Book.Medium}; {Book.Title}; {Book.Author}; {Book.NameOfSerie}; {Book.NumberOfBookInSerie}; {Book.Genre}; {Book.Theme}; {Book.RunTime}; {Book.ReadStatus}; {Book.Rating}");
-            File.AppendAllLines(Path.Combine(Adresar, "listOfAudio.csv"), audio);
+            foreach (var item in vsechnyKnihy)
+            {
+            if (!nacteneZeSouboru.Contains(item))
+            {
+                noveKnihy.Add(item);
+            }
+            }
+            File.AppendAllLines(BooksCSV, noveKnihy);
+
+            var vsechnyAudio = AudioList.ListOfAudio.Select(Book => $"{Book.Medium}; {Book.Title}; {Book.Author}; {Book.NameOfSerie}; {Book.NumberOfBookInSerie}; {Book.Genre}; {Book.Theme}; {Book.RunTime}; {Book.ReadStatus}; {Book.Rating}");
+            var nacteneAudioZeSouboru = File.ReadAllLines(AudiosCSV);
+            List<string> noveAudio = [];
+
+            foreach (var item in vsechnyAudio)
+            {
+            if (!nacteneAudioZeSouboru.Contains(item))
+            {
+                noveAudio.Add(item);
+            }
+            }
+            File.AppendAllLines(AudiosCSV, noveAudio);
 
             var prani = WishList.ListOfWish.Select(Book => $"{Book.Medium}; {Book.Title}; {Book.Author}; {Book.NameOfSerie}; {Book.NumberOfBookInSerie}");
-            File.AppendAllLines(Path.Combine(Adresar, "wishlist.csv"), prani);
+            var nacteneWishZeSouboru = File.ReadAllLines(WishlistCSV);
+            List<string> noveWish = [];
+
+            foreach (var item in vsechnyAudio)
+            {
+            if (!nacteneWishZeSouboru.Contains(item))
+            {
+                noveWish.Add(item);
+            }
+            }
+            File.AppendAllLines(AudiosCSV, noveWish);
         }
     }

@@ -6,11 +6,6 @@ namespace _Projekt_KnihovnaKnihomolaV1;
 class BookList
 {
     public static List<Book> ListOfBook = [];
-    //ADD
-    public static void AddToList(Book publication)
-    {
-        ListOfBook.Add(publication);
-    }
     //LIST
     public static void GetListOfBooks()
     {
@@ -19,12 +14,12 @@ class BookList
             item.GetInfo();
         }
     }
-    public static List<Publication> GetSerie(string nameSerie)
+    public static List<Publication> GetToSerie(string nameSerie)
     {
         List<Publication> serie = [];
         foreach (var item in ListOfBook)
         {
-            if (item.NameOfSerie.ToLower().Contains(nameSerie.ToLower()))
+            if (item.NameOfSerie.ToLower() == nameSerie.ToLower())
             {
                 serie.Add(item);
             }
@@ -82,7 +77,7 @@ class BookList
     public static void GenreStats()
     {
         var groupingGenre = ListOfBook.GroupBy(genre => genre.Genre);
-        foreach (var skupina in BookList.ListOfBook.GroupBy(genre => genre.Genre))
+        foreach (var skupina in ListOfBook.GroupBy(genre => genre.Genre))
         {
             var genreCount = skupina.Select(t => t.Title);
             Console.WriteLine(skupina.Key + ": počet knih " + genreCount.Count());
@@ -112,7 +107,7 @@ class BookList
         {
             Console.WriteLine("Přejete si odstranit tuto knihu (A/N)? ");
             ListOfBook[index].GetInfo();
-            string notification = InputManage.LoadInput();
+            string notification = InputManage.LoadInput("");
             if (notification.ToLower() == "a")
             {
                 ListOfBook.RemoveAt(index);
@@ -127,11 +122,12 @@ class BookList
     public static void GetRate()
     {
         Console.WriteLine("Zadejte titul knihy, kterou chcete ohodnotit.");
-        int index = ListOfBook.FindIndex(p => p.Title.ToLower() == InputManage.LoadInput().ToLower());
+        string vstup = InputManage.LoadInput("");
+        int index = ListOfBook.FindIndex(p => p.Title.ToLower() == vstup.ToLower());
         if (index != -1)
         {
             Console.WriteLine("Zadejte hodnocení.");
-            ListOfBook[index].RatePublication(InputManage.StringToNumber(InputManage.LoadInput()));
+            ListOfBook[index].RatePublication(InputManage.StringToNumber(InputManage.LoadInput("")));
             Console.WriteLine("Kniha byla ohodnocena.");
         }
         else
@@ -144,11 +140,6 @@ class BookList
 class AudioList
 {
     public static List<AudioBook> ListOfAudio = [];
-    //ADD
-    public static void AddToList(AudioBook publication)
-    {
-        ListOfAudio.Add(publication);
-    }
     //LIST
     public static void GetListOfBooks()
     {
@@ -157,12 +148,12 @@ class AudioList
             item.GetInfo();
         }
     }
-    public static List<Publication> GetSerie(string nameSerie)
+    public static List<Publication> GetToSerie(string nameSerie)
     {
         List<Publication> serie = [];
         foreach (var item in ListOfAudio)
         {
-            if (item.NameOfSerie.ToLower().Contains(nameSerie.ToLower()))
+            if (item.NameOfSerie.ToLower() == nameSerie.ToLower())
             {
                 serie.Add(item);
             }
@@ -213,36 +204,62 @@ class WishList
             item.GetInfo();
         }
     }
-    public static List<Publication> GetSerie(string nameSerie)
+    public static List<Publication> GetToSerie(string nameSerie)
     {
         List<Publication> serie = [];
         foreach (var item in ListOfWish)
         {
-            if (item.NameOfSerie.ToLower().Contains(nameSerie.ToLower()))
-            {
-                serie.Add(item);
-            }
+            if (item.NameOfSerie.ToLower() == nameSerie.ToLower())
+                {
+                    serie.Add(item);
+                }
         }
         return serie;
+    }
+
+    public static void NewBuy(string title)
+    {
+        int index = ListOfWish.FindIndex(p => p.Title.ToLower() == title.ToLower());
+        if (index != -1)
+        {
+            Console.WriteLine("Zadaný titul byl nalezen v seznamu přání. Zadejte prosím další informace: {genre};{theme};{pages};{readStatus};{rating}");
+            List<string> info = new List<string>() { "genre", "theme", "pages", "readStatus", "rating" };
+            List<string> hodnoty = [];
+
+            foreach (var item in info)
+            {
+                Console.WriteLine($"Zadejte {item}:");
+                hodnoty.Add(Console.ReadLine());
+            }
+            BookList.ListOfBook.Add(new Book("book",ListOfWish[index].Title,ListOfWish[index].Author,ListOfWish[index].NameOfSerie,ListOfWish[index].NumberOfBookInSerie, InputManage.LoadInput("genre"), InputManage.LoadInput("theme"), InputManage.StringToNumber(InputManage.LoadInput("pages")), InputManage.StringToBoolean(InputManage.LoadInput("readStatus")), InputManage.StringToNumberOrNull(InputManage.LoadInput("rating"),"rating")));
+            ListOfWish.RemoveAt(index);
+            Console.WriteLine("Kniha byla přidána do knihovny a odstraněna ze seznamu přání.");
+        }
+        else
+        {
+            Console.WriteLine("Zadaný titul nebyl nalezen v seznamu přání. Zadejte knihu přes hlavní menu 1 - přidat publikaci.");
+        }
     }
 }
 
 class Serie
 {
-    public static void GetSerie(string name)
+    public static void GetFullSerie(string name)
     {
-        var bookSerie = BookList.GetSerie(name).Concat(AudioList.GetSerie(name)).Concat(WishList.GetSerie(name));
-        Console.WriteLine($"Serie {name} obsahuje tyto tituly:");
-        foreach (var item in bookSerie.OrderBy(i => i.NumberOfBookInSerie))
+        List<Publication> bookSerie = BookList.GetToSerie(name).Concat(AudioList.GetToSerie(name)).Concat(WishList.GetToSerie(name)).ToList();
+        if (bookSerie.Count() > 0)
         {
-            if (item.Medium == "book" || item.Medium == "audio")
+            Console.WriteLine($"Serie {name} obsahuje tyto tituly:");
+            foreach (var item in bookSerie.OrderBy(i => i.NumberOfBookInSerie))
             {
-                Console.WriteLine($"{item.Title}, díl {item.NumberOfBookInSerie}, zakoupeno");
+                Console.WriteLine((item.Medium == "book" || item.Medium == "audio") ? $"{item.Title}, díl {item.NumberOfBookInSerie}, zakoupeno" : $"{item.Title}, díl {item.NumberOfBookInSerie}");
             }
-            else
-            {
-                Console.WriteLine($"{item.Title}, díl {item.NumberOfBookInSerie}");
-            }
+        }
+        else
+        {
+            Console.WriteLine("Zadaná serie nebyla nalezena.");
         }
     }
 }
+
+

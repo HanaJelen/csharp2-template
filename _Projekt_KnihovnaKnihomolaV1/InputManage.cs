@@ -9,98 +9,104 @@ namespace _Projekt_KnihovnaKnihomolaV1;
 
 public class InputManage
 {
-    public static void GetNewPublication(string item)//vytvoření nového objektu
+    public static void GetNewPublication(int item)//vytvoření nového objektu
     {
-        string[] inputParts = LoadInputToParts(item);
-        switch (inputParts[0])
+        switch (item)
         {
-            case "book":
+            case 1:
                 //Book(0string medium, 1string title, 2string author, 3string nameOfSerie, 4int numberOfBookInSerie, 5string genre, 6string theme, 7int pages, 8bool readStatus, 9int rating) 
-                Book kniha = new Book(inputParts[0].Trim(), inputParts[1].Trim(), inputParts[2].Trim(), inputParts[3].Trim(), StringToNumberOrNull(inputParts[4].Trim()), inputParts[5].Trim(), inputParts[6].Trim(), StringToNumber(inputParts[7].Trim()), StringToBoolean(inputParts[8].Trim()), StringToNumberOrNull(inputParts[9].Trim()));
-                BookList.AddToList(kniha);
+                BookList.ListOfBook.Add(new Book("book", LoadInput("title"), LoadInput("author"), LoadInput("nameOfSerie"), StringToNumberOrNull(LoadInput("numberOfBookInSerie"),"numberOfBookInSerie"), LoadInput("genre"), LoadInput("theme"), StringToNumber(LoadInput("pages")), StringToBoolean(LoadInput("readStatus")), StringToNumberOrNull(LoadInput("rating"), "rating")));
                 break;
-            case "audio":
-                //AudioBook (0string medium, 1string title, 2string author, 3string nameOfSerie, 4int numberOfBookInSerie, 5string genre, 6string theme, 7TimeSpan runTime, 8bool readStatus, 9int rating)
-                AudioBook audio = new AudioBook(inputParts[0].Trim(), inputParts[1].Trim(), inputParts[2].Trim(), inputParts[3].Trim(), StringToNumberOrNull(inputParts[4].Trim()), inputParts[5].Trim(), inputParts[6].Trim(), StringToTime(inputParts[7].Trim()), StringToBoolean(inputParts[8].Trim()), StringToNumberOrNull(inputParts[9].Trim()));
-                AudioList.AddToList(audio);
+            case 2:
+                AudioList.ListOfAudio.Add(new AudioBook("audio", LoadInput("title"),LoadInput("author"),LoadInput("nameOfSerie"),StringToNumberOrNull(LoadInput("numberOfBookInSerie"), "numberOfBookInSerie"),LoadInput("genre"),LoadInput("theme"),StringToTime(LoadInput("runTime")),StringToBoolean(LoadInput("readStatus")),StringToNumberOrNull(LoadInput("rating"), "rating")));
                 break;
-            case "wish":
+            case 3:
                 //WishListBook(0string medium, 1string title, 2string author, 3string nameOfSerie, 4int numberOfBookInSerie)
-                Publication wish = new WishListBook(inputParts[0].Trim(), inputParts[1].Trim(), inputParts[2].Trim(), inputParts[3].Trim(), StringToNumber(inputParts[4].Trim()), StringToDate(inputParts[5].Trim()));
-                WishList.AddToList((WishListBook)wish);
+                WishList.ListOfWish.Add(new WishListBook("wish", LoadInput("title"), LoadInput("author"), LoadInput("nameOfSerie"), StringToNumberOrNull(LoadInput("numberOfBookInSerie"), "numberOfBookInSerie"), StringToDate(LoadInput("dateRelease"))));
                 break;
-            default:
-                Console.WriteLine($"Položka ({item}) nebyla správně načtena.");
-                break;
+                case 4:
+                    break;
+                default:
+                    Console.WriteLine("Zadali jste neočekávaný vstup. Zadejte prosím znovu. Zda chce knihu přidat:\n1 - novou knihu, 2 - novou audioknihu, 3 - do seznamu přání, 4 - zpět.");
+                    break;
         }
     }
     public static string[] LoadInputToParts(string input)//metoda pro rozdělení načteného vstupu na jednotlivé části, v případě ADD/FIND kontroluje, zda zadání bylo kompletní
     {
         string[] inputParts = input.Split(";");
-        if (inputParts[0].ToLower() == "book" || inputParts[0].ToLower() == "audio")
-        {
-            while (inputParts.Length != 10)
-            {
-                Console.WriteLine($"You not enter all paramets. Try it again in format: string medium, string title, string author, string nameOfSerie, int numberOfBookInSerie, string genre, string theme, TimeSpan runTime, bool readStatus, int rating");
-                input = LoadInput();
-                inputParts = input.Split(";");
-            }
-            return inputParts;
-        }
-
-        if (inputParts[0].ToLower() == "wish")
-        {
-            while (inputParts.Length != 6)
-            {
-                Console.WriteLine($"You not enter all paramets. Try it again in format: string medium, string title, string author, string nameOfSerie, int numberOfBookInSerie.");
-                input = LoadInput();
-                inputParts = input.Split(";");
-            }
-            return inputParts;
-        }
-        if (inputParts[0].ToLower() == "inpress")
-        {
-            while (inputParts.Length != 6)
-            {
-                Console.WriteLine($"You not enter all paramets. Try it again in format: string medium, string title, string author, string nameOfSerie, int numberOfBookInSerie, DateTime dateRealease.");
-                input = LoadInput();
-                inputParts = input.Split(";");
-            }
-            return inputParts;
-        }
-
-        else
-        {
-            return inputParts;
-        }
+        
+        return inputParts;
     }
 
-    public static string LoadInput()//načtení a ověření vstupu, že se nejedná o prázdný řetězec či řetezec s hodnotou null
+    public static string LoadInput(string typeMessage)//načtení a ověření vstupu, že se nejedná o prázdný řetězec či řetezec s hodnotou null
     {
-        string? input = Console.ReadLine();
-        while (string.IsNullOrWhiteSpace(input) == true)
+        switch (typeMessage)
         {
-            Console.WriteLine("Please enter some input.");
-            input = Console.ReadLine();
+            case "title":
+                Console.WriteLine($"Zadejte název knihy:");
+                break;
+            case "author":
+                Console.WriteLine($"Zadejte jméno a přijmení autora:");
+                break;
+            case "nameOfSerie":
+                Console.WriteLine($"Zadejte název serie, pokud kniha není součástí serie stiskněte enter:");
+                break;
+            case "numberOfBookInSerie":
+                Console.WriteLine($"Zadejte pořadí knihy v serii, pokud kniha není součástí serie stiskněte enter:");
+                break;
+            case "genre":
+                Console.WriteLine($"Zadejte žánr knihy:");
+                break;
+            case "theme":
+                Console.WriteLine($"Zadejte hlavní téma knihy:");
+                break;
+            case "pages":
+                Console.WriteLine($"Zadejte počet stran knihy:");
+                break;
+            case "runTime":
+                Console.WriteLine($"Zadejte délku časové stopy:");
+                break;
+            case "readStatus":
+                Console.WriteLine($"Knihu jste již přečetli - true nebo ještě ne - false:");
+                break;
+            case "rating":
+                Console.WriteLine($"Zadejte hodnocení knihy, pokud jste knihu ještě nečetli zmačtněte enter:");
+                break;
+            case "dateRelease":
+                Console.WriteLine($"Zadejte datum vydání, pokud je známo:");
+                break;
+            default:
+                break;
+        }
+        string? input = Console.ReadLine();
+        List<string> nullTypes = new List<string>() { "nameOfSerie", "numberOfBookInSerie", "rating", "dateRelease" };
+        if (!nullTypes.Contains(typeMessage))
+        {
+            while (string.IsNullOrWhiteSpace(input) == true)
+            {
+                Console.WriteLine("Please enter some input.");
+                input = Console.ReadLine();
+            }
+            return input;
         }
         return input;
     }
     public static DateTime? StringToDate(string date)//parsování datového typu
     {
         //DateTime dateValue;
-        if (date == "null" || date == "")
-        {
-            return null;
-        }
-        else
+        if (!string.IsNullOrWhiteSpace(date))
         {
             DateTime dateValue;
             while (DateTime.TryParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue) == false)
             {
                 Console.WriteLine("Date format is not correct. Use yyyy-MM-dd format.");
-                date = LoadInput();
+                date = LoadInput("dateRelease");
             }
             return dateValue;
+        }
+        else
+        {
+            return null;
         }
     }
 
@@ -110,14 +116,14 @@ public class InputManage
         while (TimeSpan.TryParseExact(time, "h\\:mm\\:ss", CultureInfo.InvariantCulture, TimeSpanStyles.AssumeNegative, out timeValue) == false)
         {
             Console.WriteLine("Time format is not correct. Use h\\:mm\\:ss format.");
-            time = LoadInput();
+            time = LoadInput("runTime");
         }
         return timeValue;
     }
 
-    public static int? StringToNumberOrNull(string number)//parsování vstup obsahujících celočíselnou hodnotu
+    public static int? StringToNumberOrNull(string number, string type)//parsování vstup obsahujících celočíselnou hodnotu
     {
-        if (number == "null" || number == "")
+        if (string.IsNullOrWhiteSpace(number))
         {
             return null;
         }
@@ -126,8 +132,8 @@ public class InputManage
             int pageNumber;
             while (int.TryParse(number, out pageNumber) == false)
             {
-                Console.WriteLine("Pages must be integer.");
-                number = LoadInput();
+                Console.WriteLine("Je potřeba zadat celé číslo.");
+                number = LoadInput(type);
             }
             return pageNumber;
         }
@@ -138,8 +144,8 @@ public class InputManage
         int pageNumber;
         while (int.TryParse(number, out pageNumber) == false)
         {
-            Console.WriteLine("Pages must be integer.");
-            number = LoadInput();
+            Console.WriteLine("Zadejte celé kladné číslo.");
+            number = LoadInput("pages");
         }
         return pageNumber;
     }
@@ -149,8 +155,8 @@ public class InputManage
         List<string> values = new List<string>() { "false", "true" };
         while (!values.Contains(value.ToLower()))
         {
-            Console.WriteLine("Enter false or true value.");
-            value = LoadInput();
+            Console.WriteLine("Zadejte pravdivostní hodnotu.");
+            value = LoadInput("readStatus");
         }
 
         if (value.ToLower() == "false")

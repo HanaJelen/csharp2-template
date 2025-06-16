@@ -70,14 +70,7 @@ public class Book : Purchased
 
     public override void GetInfo()
     {
-        if (NameOfSerie is null)
-        {
-            Console.WriteLine($"kniha: {Title}, autor: {Author}, počet stran: {Pages}, žánr: {Genre}, přečteno: {ReadStatus}, hodnocení: {Rating}");
-        }
-        else
-        {
-            Console.WriteLine($"kniha: {Title}, autor: {Author}, počet stran: {Pages}, žánr: {Genre}, serie: {NameOfSerie}, přečteno: {ReadStatus}, hodnocení: {Rating}");
-        }
+        Console.WriteLine(string.IsNullOrWhiteSpace(NameOfSerie) ? $"kniha: {Title}, autor: {Author}, počet stran: {Pages}, žánr: {Genre}, přečteno: {ReadStatus}, hodnocení: {Rating}" : $"kniha: {Title}, autor: {Author}, počet stran: {Pages}, žánr: {Genre}, serie: {NameOfSerie}, přečteno: {ReadStatus}, hodnocení: {Rating}");
     }
 }
 
@@ -93,14 +86,7 @@ public class AudioBook : Purchased
 
     public override void GetInfo()
     {
-        if (NameOfSerie is null)
-        {
-            Console.WriteLine($"kniha: {Title}, autor: {Author}, délka: {RunTime}, žánr: {Genre}, přečteno: {ReadStatus}, hodnocení: {Rating}");
-        }
-        else
-        {
-            Console.WriteLine($"kniha: {Title}, autor: {Author}, délka: {RunTime}, žánr: {Genre}, serie: {NameOfSerie}, přečteno: {ReadStatus}, hodnocení: {Rating}");
-        }
+        Console.WriteLine(string.IsNullOrWhiteSpace(NameOfSerie) ? $"kniha: {Title}, autor: {Author}, délka: {RunTime}, žánr: {Genre}, přečteno: {ReadStatus}, hodnocení: {Rating}" : $"kniha: {Title}, autor: {Author}, délka: {RunTime}, žánr: {Genre}, serie: {NameOfSerie}, přečteno: {ReadStatus}, hodnocení: {Rating}");
     }
 }
 
@@ -115,14 +101,6 @@ public class WishListBook : Publication
 
     public override void GetInfo()
     {
-        if (DateRealease is not null)
-        {
-            Console.WriteLine($"kniha: {Title}, autor: {Author}, serie: {NameOfSerie}, typ media: {Medium}, datum vydání: {DateRealease}");
-        }
-        else
-        {
-            Console.WriteLine($"kniha: {Title}, autor: {Author}, serie: {NameOfSerie}, typ media: {Medium}");
-        }
+        Console.WriteLine(DateRealease is null ? $"kniha: {Title}, autor: {Author}, serie: {NameOfSerie}, typ media: {Medium}, datum vydání: {DateRealease}" : $"kniha: {Title}, autor: {Author}, serie: {NameOfSerie}, typ media: {Medium}");
     }
 }
-
