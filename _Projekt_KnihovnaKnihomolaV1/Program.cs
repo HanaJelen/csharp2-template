@@ -15,8 +15,7 @@ internal class Program
     private static void Main(string[] args)
     {
         Console.WriteLine("Vaše knihovna se načítá...\n");
-
-        FileManage.OpenFile();//načtení knihovny a vytvoření listů
+        FileManage.OpenFile();
 
         Console.WriteLine("Vítejte ve Vaší domácí knihovně pro knihomola!!!\n");
         while (true)

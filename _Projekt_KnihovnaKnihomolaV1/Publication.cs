@@ -101,6 +101,6 @@ public class WishListBook : Publication
 
     public override void GetInfo()
     {
-        Console.WriteLine(DateRealease is null ? $"kniha: {Title}, autor: {Author}, serie: {NameOfSerie}, typ media: {Medium}, datum vydání: {DateRealease}" : $"kniha: {Title}, autor: {Author}, serie: {NameOfSerie}, typ media: {Medium}");
+        Console.WriteLine(DateRealease is not null ? $"kniha: {Title}, autor: {Author}, serie: {NameOfSerie}, typ media: {Medium}, datum vydání: {DateRealease}" : $"kniha: {Title}, autor: {Author}, serie: {NameOfSerie}, typ media: {Medium}");
     }
 }
