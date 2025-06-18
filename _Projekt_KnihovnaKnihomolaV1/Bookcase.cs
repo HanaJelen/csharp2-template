@@ -1,4 +1,5 @@
 using System;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 
 namespace _Projekt_KnihovnaKnihomolaV1;
@@ -119,6 +120,25 @@ class BookList
             Console.WriteLine("Zadaný titul knihy není v seznamu knihovny.");
         }
     }
+
+    public static void ChangeNameAuthor(string wrongTitle)
+    {
+        int index = ListOfBook.FindIndex(p => p.Title.ToLower() == wrongTitle.ToLower());
+         if (index != -1)
+        {
+            Console.WriteLine("Zadejte název knihy.");
+            string title = InputManage.LoadInput("");
+            Console.WriteLine("Zadejte jméno a přijmení autora.");
+            string author = InputManage.LoadInput("");
+            ListOfBook[index].Rename(title, author);
+            
+        }
+        else
+        {
+            Console.WriteLine("Zadaný titul nebyl nalezen.");
+        }
+    }
+
     public static void GetRate()
     {
         Console.WriteLine("Zadejte titul knihy, kterou chcete ohodnotit.");
@@ -185,6 +205,23 @@ class AudioList
         }
         return serie;
     }
+    public static void ChangeNameAuthor(string wrongTitle)
+    {
+        int index = ListOfAudio.FindIndex(p => p.Title.ToLower() == wrongTitle.ToLower());
+         if (index != -1)
+        {
+            Console.WriteLine("Zadejte název knihy.");
+            string title = InputManage.LoadInput("");
+            Console.WriteLine("Zadejte jméno a přijmení autora.");
+            string author = InputManage.LoadInput("");
+            ListOfAudio[index].Rename(title, author);
+            
+        }
+        else
+        {
+            Console.WriteLine("Zadaný titul nebyl nalezen.");
+        }
+    }
 
     
 }
@@ -231,7 +268,7 @@ class WishList
                 Console.WriteLine($"Zadejte {item}:");
                 hodnoty.Add(Console.ReadLine());
             }
-            BookList.ListOfBook.Add(new Book("book",ListOfWish[index].Title,ListOfWish[index].Author,ListOfWish[index].NameOfSerie,ListOfWish[index].NumberOfBookInSerie, InputManage.LoadInput("genre"), InputManage.LoadInput("theme"), InputManage.StringToNumber(InputManage.LoadInput("pages")), InputManage.StringToBoolean(InputManage.LoadInput("readStatus")), InputManage.StringToNumberOrNull(InputManage.LoadInput("rating"),"rating")));
+            BookList.ListOfBook.Add(new Book("book", ListOfWish[index].Title, ListOfWish[index].Author, ListOfWish[index].NameOfSerie, ListOfWish[index].NumberOfBookInSerie, InputManage.LoadInput("genre"), InputManage.LoadInput("theme"), InputManage.StringToNumber(InputManage.LoadInput("pages")), InputManage.StringToBoolean(InputManage.LoadInput("readStatus")), InputManage.StringToNumberOrNull(InputManage.LoadInput("rating"), "rating")));
             ListOfWish.RemoveAt(index);
             Console.WriteLine("Kniha byla přidána do knihovny a odstraněna ze seznamu přání.");
         }
@@ -239,8 +276,25 @@ class WishList
         {
             Console.WriteLine("Zadaný titul nebyl nalezen v seznamu přání. Zadejte knihu přes hlavní menu 1 - přidat publikaci.");
         }
+        }
+        public static void ChangeNameAuthor(string wrongTitle)
+        {
+        int index = ListOfWish.FindIndex(p => p.Title.ToLower() == wrongTitle.ToLower());
+        if (index != -1)
+        {
+            Console.WriteLine("Zadejte název knihy.");
+            string title = InputManage.LoadInput("");
+            Console.WriteLine("Zadejte jméno a přijmení autora.");
+            string author = InputManage.LoadInput("");
+            ListOfWish[index].Rename(title, author);
+
+        }
+        else
+        {
+            Console.WriteLine("Zadaný titul nebyl nalezen.");
+        }
+        }
     }
-}
 
 class Serie
 {

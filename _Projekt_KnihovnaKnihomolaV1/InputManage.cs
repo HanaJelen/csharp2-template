@@ -84,22 +84,21 @@ public class InputManage
         {
             while (string.IsNullOrWhiteSpace(input) == true)
             {
-                Console.WriteLine("Please enter some input.");
+                Console.WriteLine("Nezadali jste žádný text.");
                 input = Console.ReadLine();
             }
             return input;
         }
         return input;
     }
-    public static DateTime? StringToDate(string date)//parsování datového typu
+    public static DateOnly? StringToDate(string date)//parsování datového typu
     {
-        //DateTime dateValue;
+        DateOnly dateValue;
         if (!string.IsNullOrWhiteSpace(date))
         {
-            DateTime dateValue;
-            while (DateTime.TryParseExact(date, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out dateValue) == false)
+            while (DateOnly.TryParseExact(date, "dd.MM.yyyy", out dateValue) == false)
             {
-                Console.WriteLine("Date format is not correct. Use yyyy-MM-dd format.");
+                Console.WriteLine("Datum není ve správném formátu. Zadejte ve formátu: dd.MM.yyyy");
                 date = LoadInput("dateRelease");
             }
             return dateValue;
@@ -115,7 +114,7 @@ public class InputManage
         TimeSpan timeValue;
         while (TimeSpan.TryParseExact(time, "h\\:mm\\:ss", CultureInfo.InvariantCulture, TimeSpanStyles.AssumeNegative, out timeValue) == false)
         {
-            Console.WriteLine("Time format is not correct. Use h\\:mm\\:ss format.");
+            Console.WriteLine("Čas nebyl zadán ve správném formátu. Použijte formát: h\\:mm\\:ss");
             time = LoadInput("runTime");
         }
         return timeValue;

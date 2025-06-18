@@ -15,7 +15,9 @@ internal class Program
     private static void Main(string[] args)
     {
         Console.WriteLine("Vaše knihovna se načítá...\n");
-        FileManage.OpenFile();
+        FileManage.OpenFile(FileManage.BooksCSV, FileManage.nacteneZeSouboruKnihy);
+        FileManage.OpenFile(FileManage.AudiosCSV, FileManage.nacteneZeSouboruAudio);
+        FileManage.OpenFile(FileManage.WishlistCSV, FileManage.nacteneZeSouboruWish);
 
         Console.WriteLine("Vítejte ve Vaší domácí knihovně pro knihomola!!!\n");
         while (true)
@@ -175,7 +177,26 @@ internal class Program
                             BookList.GetRate();
                             break;
                         case 4://úprava knihy
-                        
+                            Console.WriteLine("Došlo k překlepu? Zadejte v jakém seznamu se kniha nachází: 1 - kniha, 2 - audio, 3 - seznam přání.");
+                            int number = InputManage.StringToNumber(InputManage.LoadInput(""));
+                            switch (number)
+                            {
+                                case 1:
+                                    Console.WriteLine("Zadejte chybný název či správný název v případě opravy jména autora.");
+                                    BookList.ChangeNameAuthor(InputManage.LoadInput(""));
+                                    break;
+                                case 2:
+                                    Console.WriteLine("Zadejte chybný název či správný název v případě opravy jména autora.");
+                                    AudioList.ChangeNameAuthor(InputManage.LoadInput(""));
+                                    break;
+                                case 3:
+                                    Console.WriteLine("Zadejte chybný název či správný název v případě opravy jména autora.");
+                                    WishList.ChangeNameAuthor(InputManage.LoadInput(""));
+                                    break;
+                                default:
+                                    Console.WriteLine("Nezadali jste správné číslo. Zadejte 1 - kniha, 2 - audio, 3 - seznam přání.");
+                                    break;
+                            }
                             break;
                         case 5:
                             break;
