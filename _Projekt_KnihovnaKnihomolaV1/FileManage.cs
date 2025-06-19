@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace _Projekt_KnihovnaKnihomolaV1;
 
-class FileManage
+static class FileManage
 {
     public static string Adresar = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Library");
     public static string BooksCSV = Path.Combine(Adresar, "listOfBooks.csv");
@@ -16,24 +16,33 @@ class FileManage
 
     public static void OpenFile(string soubor, List<string> seznam)
     {
-        if (File.Exists(soubor))
+        if (Directory.Exists(Adresar))
         {
-            using (StreamReader reader = new StreamReader(soubor))
+            if (File.Exists(soubor))
             {
-                string? line;
-                while ((line = reader.ReadLine()) != null)
+                using (StreamReader reader = new StreamReader(soubor))
                 {
-                    seznam.Add(line);
+                    string? line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        seznam.Add(line);
+                    }
+                    reader.Close();
                 }
-                reader.Close();
+                FileToList(seznam);
             }
-            FileToList(seznam);
+            else
+            {
+                Console.WriteLine($"Soubor {BooksCSV} nenalezen.");
+                File.Create(BooksCSV);
+                Console.WriteLine($"Nový soubor {BooksCSV} byl vytvořen.");
+            }
         }
         else
         {
-            Console.WriteLine($"Soubor {BooksCSV} nenalezen.");
-            File.Create(BooksCSV);
-            Console.WriteLine($"Nový soubor {BooksCSV} byl vytvořen.");
+            Console.WriteLine($"Adresář {Adresar} nenalezen.");
+            Directory.CreateDirectory(Adresar);
+            Console.WriteLine($"Nový adresář {Adresar} byl vytvořen.");
         }
     }
 
@@ -77,7 +86,7 @@ class FileManage
             writer.Close();
         }
 
-        var vsechnyAudio = AudioList.ListOfAudio.Select(Book => $"{Book.Medium}; {Book.Title}; {Book.Author}; {Book.NameOfSerie}; {Book.NumberOfBookInSerie}; {Book.Genre}; {Book.Theme}; {Book.RunTime}; {Book.ReadStatus}; {Book.Rating}");
+        var vsechnyAudio = AudioList.ListOfAudio.Select(Book => $"{Book.Medium}; {Book.Title}; {Book.Author}; {Book.NameOfSerie}; {Book.NumberOfBookInSerie}; {Book.Genre}; {Book.Theme}; {Book.RunTime.ToString("h\\:mm\\:ss")}; {Book.ReadStatus}; {Book.Rating}");
         using (StreamWriter writer = new StreamWriter(AudiosCSV, append: false))
         {
             foreach (var item in vsechnyAudio)

@@ -93,7 +93,7 @@ public class AudioBook : Purchased
 
     public override void GetInfo()
     {
-        Console.WriteLine(string.IsNullOrWhiteSpace(NameOfSerie) ? $"kniha: {Title}, autor: {Author}, délka: {RunTime}, žánr: {Genre}, přečteno: {ReadStatus}, hodnocení: {Rating}" : $"kniha: {Title}, autor: {Author}, délka: {RunTime}, žánr: {Genre}, serie: {NameOfSerie}, přečteno: {ReadStatus}, hodnocení: {Rating}");
+        Console.WriteLine(string.IsNullOrWhiteSpace(NameOfSerie) ? $"kniha: {Title}, autor: {Author}, délka: {RunTime.ToString("h\\:mm\\:ss")}, žánr: {Genre}, přečteno: {ReadStatus}, hodnocení: {Rating}" : $"kniha: {Title}, autor: {Author}, délka: {RunTime.ToString("h\\:mm\\:ss")}, žánr: {Genre}, serie: {NameOfSerie}, přečteno: {ReadStatus}, hodnocení: {Rating}");
     }
     public override void Rename(string title, string author)
     {
@@ -105,7 +105,6 @@ public class AudioBook : Purchased
 
 public class WishListBook : Publication
 {
-    private DateOnly? dateRealease;
     public DateOnly? DateRealease { get; private set; }
     public WishListBook(string medium, string title, string author, string? nameOfSerie, int? numberOfBookInSerie, DateOnly? dateRealease) : base(medium, title, author, nameOfSerie, numberOfBookInSerie)
     {

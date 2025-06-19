@@ -65,61 +65,23 @@ internal class Program
                     {
                         case 1://heslo
                             Console.Clear();
-                            Console.WriteLine("Zadejte slovo, které chcete vyhledat:");
-                            string world = InputManage.LoadInput("");
-                            Console.WriteLine($"""Výsledky hledání pro "{world}":""");
-                            var listHeslo = BookList.GetTitle(world).Concat(AudioList.GetTitle(world));
-                            foreach (var item in listHeslo.OrderBy(i => i.Title))
-                            {
-                                Console.WriteLine($"{item.Title}, autor: {item.Author}, {item.Medium}");
-                            }
+                            Library.FindBook();
                             break;
                         case 2://autor
                             Console.Clear();
-                            Console.WriteLine("Zadejte přijmení autora, jehož knihy si přejete vyhledat.");
-                            string name = InputManage.LoadInput("");
-                            Console.WriteLine($"""Knihovna obsahuje tyto knihy od autora {name}":""");
-                            var listAutor = BookList.GetBooksOfAuthor(name).Concat(AudioList.GetBooksOfAuthor(name));
-                            foreach (var item in listAutor.OrderBy(i => i.Title))
-                            {
-                                Console.WriteLine($"{item.Title}, autor: {item.Author}, {item.Medium}");
-                            }
+                            Library.FindAuthor();
                             break;
                         case 3://žánr
                             Console.Clear();
-                            Console.WriteLine("Zadejte žánr.");
-                            string genre = InputManage.LoadInput("");
-                            var vyber = from v in BookList.ListOfBook where v.Genre == genre select (v.Title, v.Author, v.Medium);
-                            var vyber2 = from v in AudioList.ListOfAudio where v.Genre == genre select (v.Title, v.Author, v.Medium);
-                            var vyber3 = vyber.Concat(vyber2);
-                            foreach (var item in vyber)
-                            {
-                                Console.WriteLine($"{item.Title}, {item.Author}, {item.Medium}");
-                            }
+                            Library.GetBooksOfGenre();
                             break;
                         case 4://téma
                             Console.Clear();
-                            Console.WriteLine("Zadejte téma.");
-                            string theme = InputManage.LoadInput("");
-                            vyber = from v in BookList.ListOfBook where v.Theme == theme select (v.Title, v.Author, v.Medium);
-                            vyber2 = from v in AudioList.ListOfAudio where v.Theme == theme select (v.Title, v.Author, v.Medium);
-                            vyber3 = vyber.Concat(vyber2);
-                            foreach (var item in vyber)
-                            {
-                                Console.WriteLine($"{item.Title}, {item.Author}, {item.Medium}");
-                            }
+                            Library.GetThemeBooks();
                             break;
                         case 5://rozsah
                             Console.Clear();
-                            Console.WriteLine("Zadejte dolní hranici");
-                            int rozsahDolni = InputManage.StringToNumber(InputManage.LoadInput(""));
-                            Console.WriteLine("Zadejte horní hranici");
-                            int rozsahHorni = InputManage.StringToNumber(InputManage.LoadInput(""));
-                            var rozhraniStran = from v in BookList.ListOfBook where (rozsahDolni < v.Pages) && (v.Pages < rozsahHorni) select (v.Title, v.Author);
-                            foreach (var item in rozhraniStran)
-                            {
-                                Console.WriteLine($"{item.Title}, {item.Author}");
-                            }
+                            Library.GetBooksAccordingPages();
                             break;
                         case 6:
                             break;

@@ -7,7 +7,7 @@ using System.IO;
 
 namespace _Projekt_KnihovnaKnihomolaV1;
 
-public class InputManage
+static class InputManage
 {
     public static void GetNewPublication(int item)//vytvoření nového objektu
     {
@@ -130,6 +130,7 @@ public class InputManage
         }
         else
         {
+            number = number.Trim();
             int pageNumber;
             while (int.TryParse(number, out pageNumber) == false)
             {
@@ -141,7 +142,7 @@ public class InputManage
     }
     public static int StringToNumber(string number)//parsování vstup obsahujících celočíselnou hodnotu
     {
-        
+        number = number.Trim();
         int pageNumber;
         while (int.TryParse(number, out pageNumber) == false)
         {
@@ -153,6 +154,7 @@ public class InputManage
 
     public static bool StringToBoolean(string value)//parsování vstup obsahujícího pravdivostní hodnotu
     {
+        value = value.Trim();
         List<string> values = new List<string>() { "false", "true" };
         while (!values.Contains(value.ToLower()))
         {
