@@ -112,6 +112,7 @@ public class InputManage
 
     public static TimeSpan StringToTime(string time)//parsování časového typu
     {
+        time = time.Trim();
         TimeSpan timeValue;
         while (TimeSpan.TryParseExact(time, "h\\:mm\\:ss", CultureInfo.InvariantCulture, TimeSpanStyles.AssumeNegative, out timeValue) == false)
         {
