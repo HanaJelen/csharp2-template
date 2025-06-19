@@ -22,7 +22,7 @@ public class InputManage
                 break;
             case 3:
                 //WishListBook(0string medium, 1string title, 2string author, 3string nameOfSerie, 4int numberOfBookInSerie)
-                WishList.ListOfWish.Add(new WishListBook("wish", LoadInput("title"), LoadInput("author"), LoadInput("nameOfSerie"), StringToNumberOrNull(LoadInput("numberOfBookInSerie"), "numberOfBookInSerie"), StringToDate(LoadInput("dateRelease"))));
+                WishList.ListOfWish.Add(new WishListBook("wish", LoadInput("title"), LoadInput("author"), LoadInput("nameOfSerie"), StringToNumberOrNull(LoadInput("numberOfBookInSerie"), "numberOfBookInSerie"), StringToDate(LoadInput("dateRelease").Trim())));
                 break;
                 case 4:
                     break;
@@ -93,6 +93,7 @@ public class InputManage
     }
     public static DateOnly? StringToDate(string date)//parsování datového typu
     {
+        date = date.Trim();
         DateOnly dateValue;
         if (!string.IsNullOrWhiteSpace(date))
         {
